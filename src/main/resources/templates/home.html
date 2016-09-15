@@ -12,9 +12,11 @@
     </form>
 
 
+
+
     <ol>
         {{#toDoItems}}
-            <li>{{text}} {{isDone}}</li>
+            <li>{{text}} {{isDone}} <a href="/delete?todoID={{id}}"> <button>delete</button> </a> </li>
         {{/toDoItems}}
     </ol>
 

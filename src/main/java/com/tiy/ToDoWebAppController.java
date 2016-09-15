@@ -29,8 +29,21 @@ public class ToDoWebAppController {
 
     @RequestMapping(path = "/add-todo", method = RequestMethod.POST)
     public String addToDo(String todoText) {
-        ToDo todo = new ToDo(todoText);
-        todos.save(todo);
+        System.out.println("About to add: " + todoText);
+        if (todoText != null) {
+            ToDo todo = new ToDo(todoText);
+            todos.save(todo);
+            System.out.println("ID of todo just added: " + todo.id);
+        }
+        return "redirect:/";
+    }
+
+    @RequestMapping(path = "/delete", method = RequestMethod.GET)
+    public String deleteToDo(Model model, Integer idOfTodo) {
+        System.out.println("About to delete: " + idOfTodo);
+        if (idOfTodo != null) {
+            todos.delete(idOfTodo);
+        }
         return "redirect:/";
     }
 }
