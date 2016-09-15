@@ -11,5 +11,12 @@
         <button type="submit">Add</button>
     </form>
 
+
+    <ol>
+        {{#toDoItems}}
+            <li>{{text}} {{isDone}}</li>
+        {{/toDoItems}}
+    </ol>
+
 </body>
 </html>
