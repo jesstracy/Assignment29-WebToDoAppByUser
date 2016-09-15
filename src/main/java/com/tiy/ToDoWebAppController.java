@@ -39,10 +39,10 @@ public class ToDoWebAppController {
     }
 
     @RequestMapping(path = "/delete", method = RequestMethod.GET)
-    public String deleteToDo(Model model, Integer idOfTodo) {
-        System.out.println("About to delete: " + idOfTodo);
-        if (idOfTodo != null) {
-            todos.delete(idOfTodo);
+    public String deleteToDo(Model model, Integer todoID) {
+        System.out.println("About to delete: " + todoID);
+        if (todoID != null) {
+            todos.delete(todoID);
         }
         return "redirect:/";
     }
