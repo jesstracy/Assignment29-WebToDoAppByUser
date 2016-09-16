@@ -28,9 +28,18 @@ public class Assignment29ApplicationTests {
 		System.out.println("testInsertToDo()");
 		System.out.println("my todos Repository = " + todos.toString());
 
+
+		String testUserName = "Test_1";
+		String testPassword = "pass";
+
+
+		User testUser = new User(testUserName, testPassword);
+		users.save(testUser);
+
+
 		String testToDoText = "Test ToDo";
 
-		ToDo testToDo = new ToDo(testToDoText);
+		ToDo testToDo = new ToDo(testToDoText, testUser);
 		todos.save(testToDo);
 
 		ToDo retrievedToDo = todos.findFirstByText(testToDoText);
@@ -39,6 +48,8 @@ public class Assignment29ApplicationTests {
 		todos.delete(testToDo);
 		retrievedToDo = todos.findFirstByText(testToDoText);
 		assertNull(retrievedToDo);
+
+		users.delete(testUser);
 	}
 
 	@Test

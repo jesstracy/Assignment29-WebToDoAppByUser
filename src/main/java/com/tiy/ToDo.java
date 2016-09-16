@@ -12,8 +12,8 @@ public class ToDo {
     @GeneratedValue
     int id;
 
-//    @ManyToOne
-//    User user;
+    @ManyToOne
+    User user;
 
     @Column(nullable = false)
     String text;
@@ -24,9 +24,10 @@ public class ToDo {
     public ToDo() {
     }
 
-    public ToDo(String text) {
+    public ToDo(String text, User user) {
         this.text = text;
         this.isDone = false;
+        this.user = user;
     }
 }
 

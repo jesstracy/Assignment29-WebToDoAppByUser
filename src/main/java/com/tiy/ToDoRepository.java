@@ -7,4 +7,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface ToDoRepository extends CrudRepository<ToDo, Integer> {
     ToDo findFirstByText(String text);
+    Iterable<ToDo> findAllByUserId(Integer userId);
 }
