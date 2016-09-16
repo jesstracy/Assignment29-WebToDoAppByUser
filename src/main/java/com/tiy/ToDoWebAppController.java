@@ -28,6 +28,11 @@ public class ToDoWebAppController {
             user.name = "Jessica";
             user.password = "pass";
             users.save(user);
+        } else if (users.count() == 1) {
+            User user2 = new User();
+            user2.name = "Emily";
+            user2.password = "12345";
+            users.save(user2);
         }
     }
 
