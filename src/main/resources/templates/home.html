@@ -6,11 +6,21 @@
 </head>
 <body>
 
+{{^username}}
+    <form action="/login" method="post">
+        <input type="text" placeholder="Name" name="username">
+        <input type="text" placeholder="Password" name="password">
+        <button type="submit">Login</button>
+    </form>
+{{/username}}
+
+
+{{#username}}
+    Welcome, {{username}}!
     <form action="/add-todo" method="post">
         <input type="text" placeholder="Enter new todo item" name="todoText">
         <button type="submit">Add</button>
     </form>
-
 
 
 
@@ -19,6 +29,8 @@
             <li>{{text}} {{isDone}} <a href="/delete?todoID={{id}}"> <button>delete</button> </a> </li>
         {{/toDoItems}}
     </ol>
+
+{{/username}}
 
 </body>
 </html>

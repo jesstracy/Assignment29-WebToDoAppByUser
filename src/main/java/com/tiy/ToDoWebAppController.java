@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 
 /**
@@ -16,6 +17,9 @@ public class ToDoWebAppController {
     @Autowired
     ToDoRepository todos;
 
+    @Autowired
+    UserRepository users;
+
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public String home(Model model) {
         Iterable<ToDo> listOfTodosIterable = todos.findAll();
@@ -25,6 +29,19 @@ public class ToDoWebAppController {
         }
         model.addAttribute("toDoItems", listOfTodos);
         return "home";
+    }
+
+    @RequestMapping(path = "/login", method = RequestMethod.POST)
+    public String login(HttpSession session, String username, String password) throws Exception {
+        User user = users.findFirstByName(username);
+        if (user != null) {
+            if (!password.equals(user.password)) {
+                throw new Exception("Invalid password!");
+            }
+            session.setAttribute("username", username);
+        }
+
+        return "redirect:/";
     }
 
     @RequestMapping(path = "/add-todo", method = RequestMethod.POST)

@@ -16,6 +16,9 @@ public class Assignment29ApplicationTests {
 	@Autowired
 	ToDoRepository todos;
 
+	@Autowired
+	UserRepository users;
+
 	@Test
 	public void contextLoads() {
 	}
@@ -38,4 +41,34 @@ public class Assignment29ApplicationTests {
 		assertNull(retrievedToDo);
 	}
 
+	@Test
+	public void testInsertUser() {
+		System.out.println("testInsertUser()");
+		System.out.println("my users Repository = " + users.toString());
+
+		String testUserName = "Test_1";
+		String testPassword = "pass";
+
+
+		User testUser = new User(testUserName, testPassword);
+		users.save(testUser);
+
+		User retrievedUser = users.findFirstByName(testUserName);
+		assertNotNull(retrievedUser);
+
+		users.delete(testUser);
+		retrievedUser = users.findFirstByName(testUserName);
+		assertNull(retrievedUser);
+	}
+
+//	@Test
+//	public void insertHarcodedUser() {
+//
+//		String userName = "Jessica";
+//		String password = "pass";
+//
+//
+//		User myUser = new User(userName, password);
+//		users.save(myUser);
+//	}
 }

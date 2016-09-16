@@ -12,6 +12,9 @@ public class ToDo {
     @GeneratedValue
     int id;
 
+//    @ManyToOne
+//    User user;
+
     @Column(nullable = false)
     String text;
 
