@@ -21,20 +21,25 @@ public class ToDoWebAppController {
     UserRepository users;
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    public String home(Model model) {
+    public String home(Model model, HttpSession session) {
         Iterable<ToDo> listOfTodosIterable = todos.findAll();
         ArrayList<ToDo> listOfTodos = new ArrayList<>();
         for (ToDo todo : listOfTodosIterable) {
             listOfTodos.add(todo);
         }
         model.addAttribute("toDoItems", listOfTodos);
+        if (session.getAttribute("username") != null) {
+            model.addAttribute("username", session.getAttribute("username"));
+        }
         return "home";
     }
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     public String login(HttpSession session, String username, String password) throws Exception {
         User user = users.findFirstByName(username);
+
         if (user != null) {
+//            System.out.println("User is not null! " + user.name);
             if (!password.equals(user.password)) {
                 throw new Exception("Invalid password!");
             }
@@ -46,18 +51,18 @@ public class ToDoWebAppController {
 
     @RequestMapping(path = "/add-todo", method = RequestMethod.POST)
     public String addToDo(String todoText) {
-        System.out.println("About to add: " + todoText);
+//        System.out.println("About to add: " + todoText);
         if (todoText != null) {
             ToDo todo = new ToDo(todoText);
             todos.save(todo);
-            System.out.println("ID of todo just added: " + todo.id);
+//            System.out.println("ID of todo just added: " + todo.id);
         }
         return "redirect:/";
     }
 
     @RequestMapping(path = "/delete", method = RequestMethod.GET)
     public String deleteToDo(Model model, Integer todoID) {
-        System.out.println("About to delete: " + todoID);
+//        System.out.println("About to delete: " + todoID);
         if (todoID != null) {
             todos.delete(todoID);
         }
