@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by jessicatracy on 9/15/16.
@@ -20,6 +21,8 @@ public class ToDoWebAppController {
 
     @Autowired
     UserRepository users;
+
+    User user;
 
     @PostConstruct
     public void init() {
@@ -39,10 +42,29 @@ public class ToDoWebAppController {
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public String home(Model model, HttpSession session, String username) {
 //        if (session.getAttribute("username") != null) {
-//            System.out.println("Getting here...");
-//            User user = users.findFirstByName("username");
+
+//            user = users.findFirstByName("username");
 //            System.out.println("Found user in db- id is: " + user.id); /* not getting here */
-//            Iterable<ToDo> listOfTodosIterable = todos.findAllByUserId(user.id);
+//            List<ToDo> listOfTodosIterable = new ArrayList<ToDo>();
+            if (user != null) {
+                System.out.println("Getting here... (user not null)");
+                todos.findByUserId(user.id);
+//            Iterable<ToDo> listOfTodosIterable = todos.findAllByUser(user);
+                List<ToDo> listOfTodos = new ArrayList<>();
+                listOfTodos = todos.findByUserId(user.id);
+//                for (ToDo todo : listOfTodosIterable) {
+//                    listOfTodos.add(todo);
+//                    System.out.println("Added todo: " + todo.toString());
+//                }
+                model.addAttribute("toDoItems", listOfTodos);
+
+                model.addAttribute("username", session.getAttribute("username"));
+            }
+
+
+        // Original way - works but shows all todos for all users, not just the user logged in
+//        if (session.getAttribute("username") != null) {
+//            Iterable<ToDo> listOfTodosIterable = todos.findAll();
 //            ArrayList<ToDo> listOfTodos = new ArrayList<>();
 //            for (ToDo todo : listOfTodosIterable) {
 //                listOfTodos.add(todo);
@@ -51,28 +73,19 @@ public class ToDoWebAppController {
 //
 //            model.addAttribute("username", session.getAttribute("username"));
 //        }
-        if (session.getAttribute("username") != null) {
-            Iterable<ToDo> listOfTodosIterable = todos.findAll();
-            ArrayList<ToDo> listOfTodos = new ArrayList<>();
-            for (ToDo todo : listOfTodosIterable) {
-                listOfTodos.add(todo);
-            }
-            model.addAttribute("toDoItems", listOfTodos);
-
-            model.addAttribute("username", session.getAttribute("username"));
-        }
         return "home";
     }
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     public String login(HttpSession session, String username, String password) throws Exception {
-        User user = users.findFirstByName(username);
+        user = users.findFirstByName(username);
 
         if (user != null) {
-//            System.out.println("User is not null! " + user.name);
+            System.out.println("IN LOGIN METHOD: User is not null! " + user.name);
             if (!password.equals(user.password)) {
                 throw new Exception("Invalid password!");
             } else {
+                System.out.println("IN LOGIN METHOD: Setting username...");
                 session.setAttribute("username", username);
             }
         }
