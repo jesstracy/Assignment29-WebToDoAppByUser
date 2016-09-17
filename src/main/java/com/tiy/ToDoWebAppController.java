@@ -105,12 +105,15 @@ public class ToDoWebAppController {
     }
 
     @RequestMapping(path="/sign-up", method = RequestMethod.POST)
-    public String signUp(String username, String password) throws Exception {
+    public String signUp(HttpSession session, String username, String password) throws Exception {
         System.out.println("In sign up method");
         signUpTrue = false;
-        
+
         if (username != "" && password != "") {
-            System.out.println("username and password okay");
+//            System.out.println("username and password okay");
+            user = new User(username, password);
+            users.save(user);
+            session.setAttribute("username", username);
         } else {
             throw new Exception("Your username and password must not be blank!");
         }
@@ -142,7 +145,7 @@ public class ToDoWebAppController {
     public String addToDo(HttpSession session, String todoText) {
 //        System.out.println("About to add: " + todoText);
         if (todoText != null) {
-            User user = users.findFirstByName(session.getAttribute("username").toString());
+//            User user = users.findFirstByName(session.getAttribute("username").toString());
             ToDo todo = new ToDo(todoText, user);
             todos.save(todo);
 //            System.out.println("ID of todo just added: " + todo.id);
