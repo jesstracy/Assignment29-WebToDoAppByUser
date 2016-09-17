@@ -91,7 +91,6 @@ public class ToDoWebAppController {
 
     @RequestMapping(path="/login-button", method = RequestMethod.POST)
     public String loginButton(Model model, HttpSession session) {
-        System.out.println("In login method");
 
         if (!signUpTrue) {
             loginTrue = true;
@@ -106,9 +105,16 @@ public class ToDoWebAppController {
     }
 
     @RequestMapping(path="/sign-up", method = RequestMethod.POST)
-    public String signUp() {
+    public String signUp(String username, String password) throws Exception {
         System.out.println("In sign up method");
         signUpTrue = false;
+        
+        if (username != "" && password != "") {
+            System.out.println("username and password okay");
+        } else {
+            throw new Exception("Your username and password must not be blank!");
+        }
+
         return "redirect:/";
     }
 
@@ -116,6 +122,7 @@ public class ToDoWebAppController {
     public String login(HttpSession session, String username, String password) throws Exception {
         System.out.println("In login method");
         loginTrue = false;
+
         user = users.findFirstByName(username);
 
         if (user != null) {
