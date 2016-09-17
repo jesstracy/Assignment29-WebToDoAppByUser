@@ -23,6 +23,9 @@ public class ToDoWebAppController {
     UserRepository users;
 
     User user;
+    boolean signUpTrue = false;
+    boolean loginTrue = false;
+    boolean initialChoice = true;
 
 
     @PostConstruct
@@ -42,6 +45,10 @@ public class ToDoWebAppController {
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public String home(Model model, HttpSession session, String username) {
+        model.addAttribute("signUpTrue", signUpTrue);
+        model.addAttribute("loginTrue", loginTrue);
+        model.addAttribute("initialChoice", initialChoice);
+
 
         if (user != null) {
             List<ToDo> listOfTodos = new ArrayList<>();
@@ -68,8 +75,47 @@ public class ToDoWebAppController {
         return "home";
     }
 
+    @RequestMapping(path="/sign-up-button", method = RequestMethod.POST)
+    public String signUpButton(Model model, HttpSession session) {
+        if (!loginTrue) {
+            signUpTrue = true;
+//            session.setAttribute("signUpTrue", signUpTrue);
+//            model.addAttribute("signUpTrue", signUpTrue);
+
+            initialChoice = false;
+//            session.setAttribute("initialChoice", initialChoice);
+//            model.addAttribute("initialChoice", initialChoice);
+        }
+        return "redirect:/";
+    }
+
+    @RequestMapping(path="/login-button", method = RequestMethod.POST)
+    public String loginButton(Model model, HttpSession session) {
+        System.out.println("In login method");
+
+        if (!signUpTrue) {
+            loginTrue = true;
+//            session.setAttribute("loginTrue", loginTrue);
+//            model.addAttribute("loginTrue", loginTrue);
+
+            initialChoice = false;
+//            session.setAttribute("initialChoice", initialChoice);
+//            model.addAttribute("initialChoice", initialChoice);
+        }
+        return "redirect:/";
+    }
+
+    @RequestMapping(path="/sign-up", method = RequestMethod.POST)
+    public String signUp() {
+        System.out.println("In sign up method");
+        signUpTrue = false;
+        return "redirect:/";
+    }
+
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     public String login(HttpSession session, String username, String password) throws Exception {
+        System.out.println("In login method");
+        loginTrue = false;
         user = users.findFirstByName(username);
 
         if (user != null) {
