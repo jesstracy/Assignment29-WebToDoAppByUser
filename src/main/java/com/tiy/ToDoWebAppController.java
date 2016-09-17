@@ -175,6 +175,7 @@ public class ToDoWebAppController {
     @RequestMapping(path = "/logout", method = RequestMethod.POST)
     public String logout(HttpSession session) {
         session.invalidate();
+        initialChoice = true;
         return "redirect:/";
     }
 }
