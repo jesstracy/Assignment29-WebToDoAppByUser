@@ -26,6 +26,7 @@ public class ToDoWebAppController {
     boolean signUpTrue = false;
     boolean loginTrue = false;
     boolean initialChoice = true;
+    List<ToDo> listOfTodos;
 
 
     @PostConstruct
@@ -51,7 +52,6 @@ public class ToDoWebAppController {
 
 
         if (user != null) {
-            List<ToDo> listOfTodos = new ArrayList<>();
             listOfTodos = todos.findByUserId(user.id);
 
             model.addAttribute("toDoItems", listOfTodos);
@@ -158,6 +158,17 @@ public class ToDoWebAppController {
         if (todoID != null) {
             ToDo todo = todos.findOne(todoID);
             todo.isDone = !todo.isDone;
+            todos.save(todo);
+        }
+        return "redirect:/";
+    }
+
+    @RequestMapping(path="/mark-all-done", method = RequestMethod.GET)
+    public String markAllDone() {
+        System.out.println("Marking all done...");
+        listOfTodos = todos.findAllByUser(user);
+        for (ToDo todo : listOfTodos) {
+            todo.isDone = true;
             todos.save(todo);
         }
         return "redirect:/";
