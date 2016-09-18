@@ -24,6 +24,7 @@ public class ToDoWebAppController {
 
     User user;
 
+
     @PostConstruct
     public void init() {
         if (users.count() == 0) {
@@ -41,25 +42,15 @@ public class ToDoWebAppController {
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public String home(Model model, HttpSession session, String username) {
-//        if (session.getAttribute("username") != null) {
 
-//            user = users.findFirstByName("username");
-//            System.out.println("Found user in db- id is: " + user.id); /* not getting here */
-//            List<ToDo> listOfTodosIterable = new ArrayList<ToDo>();
-            if (user != null) {
-                System.out.println("Getting here... (user not null)");
-                todos.findByUserId(user.id);
-//            Iterable<ToDo> listOfTodosIterable = todos.findAllByUser(user);
-                List<ToDo> listOfTodos = new ArrayList<>();
-                listOfTodos = todos.findByUserId(user.id);
-//                for (ToDo todo : listOfTodosIterable) {
-//                    listOfTodos.add(todo);
-//                    System.out.println("Added todo: " + todo.toString());
-//                }
-                model.addAttribute("toDoItems", listOfTodos);
+        if (user != null) {
+            List<ToDo> listOfTodos = new ArrayList<>();
+            listOfTodos = todos.findByUserId(user.id);
 
-                model.addAttribute("username", session.getAttribute("username"));
-            }
+            model.addAttribute("toDoItems", listOfTodos);
+
+            model.addAttribute("username", session.getAttribute("username"));
+        }
 
 
         // Original way - works but shows all todos for all users, not just the user logged in
@@ -73,6 +64,7 @@ public class ToDoWebAppController {
 //
 //            model.addAttribute("username", session.getAttribute("username"));
 //        }
+
         return "home";
     }
 
@@ -81,11 +73,11 @@ public class ToDoWebAppController {
         user = users.findFirstByName(username);
 
         if (user != null) {
-            System.out.println("IN LOGIN METHOD: User is not null! " + user.name);
+//            System.out.println("IN LOGIN METHOD: User is not null! " + user.name);
             if (!password.equals(user.password)) {
                 throw new Exception("Invalid password!");
             } else {
-                System.out.println("IN LOGIN METHOD: Setting username...");
+//                System.out.println("IN LOGIN METHOD: Setting username...");
                 session.setAttribute("username", username);
             }
         }
@@ -101,6 +93,16 @@ public class ToDoWebAppController {
             ToDo todo = new ToDo(todoText, user);
             todos.save(todo);
 //            System.out.println("ID of todo just added: " + todo.id);
+        }
+        return "redirect:/";
+    }
+
+    @RequestMapping(path = "/toggle", method = RequestMethod.GET)
+    public String toggleToDo(Model model, Integer todoID) {
+        if (todoID != null) {
+            ToDo todo = todos.findOne(todoID);
+            todo.isDone = !todo.isDone;
+            todos.save(todo);
         }
         return "redirect:/";
     }
