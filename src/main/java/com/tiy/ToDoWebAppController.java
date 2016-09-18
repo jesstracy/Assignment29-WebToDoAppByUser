@@ -123,7 +123,7 @@ public class ToDoWebAppController {
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     public String login(HttpSession session, String username, String password) throws Exception {
-        System.out.println("In login method");
+//        System.out.println("In login method");
         loginTrue = false;
 
         user = users.findFirstByName(username);
@@ -165,10 +165,24 @@ public class ToDoWebAppController {
 
     @RequestMapping(path="/mark-all-done", method = RequestMethod.GET)
     public String markAllDone() {
-        System.out.println("Marking all done...");
+//        System.out.println("Marking all done...");
+        alterIsDoneForAllTodos(true);
+        return "redirect:/";
+    }
+
+    @RequestMapping(path="/mark-all-undone", method = RequestMethod.GET)
+    public String markAllUndone() {
+//        System.out.println("Marking all NOT done...");
+        alterIsDoneForAllTodos(false);
+        return "redirect:/";
+    }
+
+    @RequestMapping(path="/toggle-all", method = RequestMethod.GET)
+    public String toggleAll() {
+//        System.out.println("Toggling all...");
         listOfTodos = todos.findAllByUser(user);
         for (ToDo todo : listOfTodos) {
-            todo.isDone = true;
+            todo.isDone = !todo.isDone;
             todos.save(todo);
         }
         return "redirect:/";
@@ -188,5 +202,13 @@ public class ToDoWebAppController {
         session.invalidate();
         initialChoice = true;
         return "redirect:/";
+    }
+
+    public void alterIsDoneForAllTodos(boolean value) {
+        listOfTodos = todos.findAllByUser(user);
+        for (ToDo todo : listOfTodos) {
+            todo.isDone = value;
+            todos.save(todo);
+        }
     }
 }
