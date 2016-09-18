@@ -57,14 +57,17 @@
 
     <ol>
         {{#toDoItems}}
-            <!--<li>{{text}} {{isDone}}-->
-            <li>
-                <form action="/toggle" method="get">
-                    {{text}} <input type="checkbox" name="todoID" value="{{id}}">
-                    <input type="submit">
-                    <!--<input type="checkbox"> {{text}}-->
-                </form>
-                <!--<a href="/toggle?todoID={{id}}"> <button>toggle</button> </a>-->
+            <li>{{text}}
+
+                {{#isDone}}
+                    <input type="checkbox" checked readonly>
+                {{/isDone}}
+
+                {{^isDone}}
+                    <input type="checkbox" readonly>
+                {{/isDone}}
+
+                <a href="/toggle?todoID={{id}}"> <button>toggle</button> </a>
                 <a href="/delete?todoID={{id}}"> <button>delete</button> </a>
             </li>
         {{/toDoItems}}
