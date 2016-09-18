@@ -57,7 +57,16 @@
 
     <ol>
         {{#toDoItems}}
-            <li>{{text}} {{isDone}}
+            <li>{{text}}
+
+                {{#isDone}}
+                    <input type="checkbox" checked readonly>
+                {{/isDone}}
+
+                {{^isDone}}
+                    <input type="checkbox" readonly>
+                {{/isDone}}
+
                 <a href="/toggle?todoID={{id}}"> <button>toggle</button> </a>
                 <a href="/delete?todoID={{id}}"> <button>delete</button> </a>
             </li>
