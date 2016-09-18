@@ -7,12 +7,39 @@
 <body>
 
 {{^username}}
-    <form action="/login" method="post">
-        <input type="text" placeholder="Name" name="username">
-        <input type="text" placeholder="Password" name="password">
-        <button type="submit">Login</button>
-    </form>
+
+    {{#initialChoice}}
+        <div style="text-align: center">
+            <form action="/sign-up-button" method="post">
+                <button type="submit">Sign Up</button>
+            </form>
+
+            - or -
+
+            <form action="/login-button" method="post">
+                <button type="submit">Login</button>
+            </form>
+         </div>
+    {{/initialChoice}}
+
+    {{#loginTrue}}
+        <form action="/login" method="post">
+            <input type="text" placeholder="Name" name="username">
+            <input type="text" placeholder="Password" name="password">
+            <button type="submit">Login</button>
+        </form>
+    {{/loginTrue}}
+
+    {{#signUpTrue}}
+        <form action="/sign-up" method="post">
+            <input type="text" placeholder="Name" name="username">
+            <input type="text" placeholder="Password" name="password">
+            <button type="submit">Sign Up</button>
+        </form>
+    {{/signUpTrue}}
+
 {{/username}}
+
 
 
 {{#username}}
